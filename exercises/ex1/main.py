@@ -1,13 +1,3 @@
-"""
-Lab 10 - Exercise 1: GitHub repository + branch protection.
-
-Creates a public GitHub repository with branch protection on 'main'
-requiring at least 1 approving review for pull requests.
-
-To run this exercise:
-  cp exercises/ex1/main.py __main__.py
-  pulumi up
-"""
 import pulumi
 import pulumi_github as github
 
