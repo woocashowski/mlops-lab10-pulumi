@@ -1,13 +1,3 @@
-"""
-Lab 10 - Exercise 2: S3 static website.
-
-Creates an S3 bucket configured as a public static website hosting
-a single index.html page.
-
-To run this exercise:
-  cp exercises/ex2/main.py __main__.py
-  pulumi up
-"""
 import pulumi
 import pulumi_aws as aws
 
