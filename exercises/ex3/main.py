@@ -1,26 +1,6 @@
-"""
-Lab 10 - Exercise 3: Multi-region S3 buckets with loop.
-
-Creates an S3 bucket per region in a Python loop, each with versioning
-enabled and a lifecycle rule transitioning objects to GLACIER after
-90 days. Exports a region -> bucket ARN dict.
-
-NOTE on region count:
-The exercise instructions ask for 3 regions. However, AWS Academy IAM
-policy restricts s3:CreateBucket to us-east-1 and us-west-2 only -
-any other region returns AccessDenied. The loop structure is identical
-to a 3-region deployment (adding a third region is a single line change
-in the `regions` list).
-
-To run this exercise:
-  cp exercises/ex3/main.py __main__.py
-  pulumi up
-"""
 import pulumi
 import pulumi_aws as aws
 
-# Two regions - AWS Academy permission limit (see note above).
-# In an unrestricted account, add e.g. "eu-west-1" here for the third region.
 regions = [
     "us-east-1",
     "us-west-2",
@@ -65,6 +45,5 @@ for r in regions:
     bucket_arns[r] = b.arn
     bucket_names[r] = b.id
 
-# Export region -> ARN dict (as required by Exercise 3 point 3)
 pulumi.export("bucketArns", bucket_arns)
 pulumi.export("bucketNames", bucket_names)
