@@ -1,22 +1,9 @@
-"""
-Lab 10 - Exercise 4: ComponentResource refactor of Exercise 3.
-
-Uses the RegionalBucket component to provision two regional buckets
-with different lifecycle configurations and a custom name prefix.
-
-To run this exercise:
-  cp exercises/ex4/main.py __main__.py
-  cp exercises/ex4/components.py components.py
-  pulumi up
-"""
 import pulumi
 from components import RegionalBucket
 
-# Region -> lifecycle_days. Different values per region demonstrate that
-# the ComponentResource is properly parameterised (Exercise 4 point 3).
 region_config = {
-    "us-east-1": 60,   # archive faster - e.g. dev/test data
-    "us-west-2": 90,   # standard archive window - e.g. production logs
+    "us-east-1": 60,   
+    "us-west-2": 90,  
 }
 
 bucket_name_prefix = "lab10-mlops-"
@@ -31,7 +18,6 @@ buckets = {
     for region, days in region_config.items()
 }
 
-# Export region -> ARN dict, same shape as Exercise 3
 pulumi.export(
     "bucketArns",
     {region: b.bucket.arn for region, b in buckets.items()},

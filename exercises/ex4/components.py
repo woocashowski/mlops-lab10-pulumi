@@ -1,16 +1,8 @@
-"""
-Reusable Pulumi ComponentResource - regional S3 bucket.
-
-Equivalent of a Terraform module: groups a bucket with its versioning
-and lifecycle configuration, scoped to a specific AWS region via its
-own provider instance.
-"""
 import pulumi
 import pulumi_aws as aws
 
 
 class RegionalBucket(pulumi.ComponentResource):
-    """An S3 bucket in a specific region with versioning and a GLACIER lifecycle rule."""
 
     def __init__(
         self,
@@ -24,7 +16,6 @@ class RegionalBucket(pulumi.ComponentResource):
 
         child_opts = pulumi.ResourceOptions(parent=self)
 
-        # Per-region provider
         provider = aws.Provider(
             f"{name}-provider",
             region=region,
@@ -33,8 +24,6 @@ class RegionalBucket(pulumi.ComponentResource):
 
         resource_opts = pulumi.ResourceOptions(parent=self, provider=provider)
 
-        # Build the bucket. If a prefix is given, AWS appends a random suffix
-        # automatically so the final name is still globally unique.
         bucket_args = {
             "tags": {
                 "Region": region,
@@ -51,7 +40,6 @@ class RegionalBucket(pulumi.ComponentResource):
             opts=resource_opts,
         )
 
-        # Versioning
         aws.s3.BucketVersioning(
             f"{name}-versioning",
             bucket=self.bucket.id,
@@ -61,7 +49,6 @@ class RegionalBucket(pulumi.ComponentResource):
             opts=resource_opts,
         )
 
-        # Lifecycle: transition to GLACIER after N days (parameterised)
         aws.s3.BucketLifecycleConfiguration(
             f"{name}-lifecycle",
             bucket=self.bucket.id,
